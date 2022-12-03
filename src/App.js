@@ -19,16 +19,16 @@ function App() {
   const connectWallet = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
       try {
+        /* get provider */
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const accounts = await window.ethereum.request(
-          "eth_requestAccounts",
-          []
-        );
+        /* get accounts */
+        const accounts = await provider.send("eth_requestAccounts", []);
+        /* get signer */
         setSigner(provider.getSigner());
+        /* local contract instance */
         setSbtContract(sbtContract(provider));
-
+        /* set active wallet address */
         setWalletAddress(accounts[0]);
-        console.log(accounts[0]);
       } catch (err) {
         console.error(err.message);
       }
