@@ -1,3 +1,3 @@
-# Starter code for Faucet dApp tutorial
+# SBT for Crime Records
 
-Boilerplate code consisting of a new create-react-app project and some basic HTML and CSS.
+Deployed on Goerli Testnet
