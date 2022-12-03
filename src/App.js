@@ -86,11 +86,9 @@ function App() {
         document.getElementById("mintadd").value,
         "QmRGEzZ8heZ4pXfshrZv6njzbmQxWU6t9d1fspvD6R7j7B"
       );
-      console.log(resp);
       setSendSuccess("Successful");
       setTransactionData(resp.hash);
     } catch (err) {
-      console.error(err.message);
       setSendError(err.message);
     }
   };
