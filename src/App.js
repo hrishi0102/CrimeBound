@@ -84,7 +84,7 @@ function App() {
       const sbtwithSigner = SbtContract.connect(signer);
       const resp = await sbtwithSigner.safeMint(
         document.getElementById("mintadd").value,
-        "QmRGEzZ8heZ4pXfshrZv6njzbmQxWU6t9d1fspvD6R7j7B"
+        "Qmb7Evd5LQeKgKn43WZy6owoTa6mJayX7YvGodpqjTn2Fm"
       );
       setSendSuccess("Successful");
       setTransactionData(resp.hash);
@@ -138,8 +138,6 @@ function App() {
                     id="mintadd"
                     placeholder="Enter wallet address (0x...)"
                   />
-                </div>
-                <div className="column">
                   <button
                     className="button is-link is-medium"
                     onClick={sendCBT}

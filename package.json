@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bulma": "^0.9.4",
     "ethers": "^5.7.2",
+    "ipfs-http-client": "^59.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
