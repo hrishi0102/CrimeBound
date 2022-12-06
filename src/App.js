@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { ethers } from "ethers";
 import sbtContract from "./ethereum/sbt";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+
+const projectId = '2IQSkxfdw8MFjp3naF8d63FXrzz';
+const projectSecretKey = '70df5ccae147c222655a4383541a212e';
+const authorization = "Basic " + btoa(projectId + ":" + projectSecretKey);
 
 function App() {
   const [walletAddress, setWalletAddress] = useState("");
@@ -10,6 +15,53 @@ function App() {
   const [SendSuccess, setSendSuccess] = useState("");
   const [SendError, setSendError] = useState("");
   const [TransactionData, setTransactionData] = useState();
+
+  const [uploadedImages, setUploadedImages] = useState();
+  const [Inputname, setName] = useState();
+  const [Inputdesc, setDesc] = useState();
+  const [baseUri, setUri] = useState();
+  //const [flg, setflg] = useState(0);
+
+  const ipfs = ipfsHttpClient({
+    url: "https://ipfs.infura.io:5001/api/v0",
+    headers: {
+      authorization,
+    },
+  });
+
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const name = event.target.name.value;
+    const desc = event.target.desc.value;
+    const files = form[0].files;
+
+    if (!files || files.length === 0) { 
+      return alert("No files selected");
+    }
+  
+    const file = files[0];
+    
+    // upload files
+    const result = await ipfs.add(file);
+    setUploadedImages("https://skywalker.infura-ipfs.io/ipfs/"+result.path);
+    setName(String(name));
+    setDesc(String(desc));
+    form.reset();
+    
+    const updatedJSON = `{
+      "name": "${Inputname}",
+      "description": "${Inputdesc}",
+      "image": "${uploadedImages}"
+    }`
+      
+    const DataStorage = async (event) => {
+      const ans = await ipfs.add(updatedJSON);
+      setUri(String(ans.path));
+    }
+    DataStorage()
+    
+  };
 
   useEffect(() => {
     getCurrentWalletConnected();
@@ -84,8 +136,11 @@ function App() {
       const sbtwithSigner = SbtContract.connect(signer);
       const resp = await sbtwithSigner.safeMint(
         document.getElementById("mintadd").value,
-        "Qmb7Evd5LQeKgKn43WZy6owoTa6mJayX7YvGodpqjTn2Fm"
+        baseUri
+        //"Qmb7Evd5LQeKgKn43WZy6owoTa6mJayX7YvGodpqjTn2Fm"
       );
+      console.log('baseUri');
+      console.log(baseUri);
       setSendSuccess("Successful");
       setTransactionData(resp.hash);
     } catch (err) {
@@ -130,6 +185,30 @@ function App() {
               )}{" "}
             </div>
             <div className="box address-box">
+            <div className="container">
+            <h1>IPFS uploader</h1> <br />
+            <form onSubmit={onSubmitHandler}>
+                <label for="file-upload" class="custom-file-upload">
+                  Select File
+                </label>
+                <input id="file-upload" type="file" name="file" />
+                <br />
+                <label for="name" class="custom-name">
+                  Enter Name of your CBT
+                </label>
+                <input type="text" id="name" name="name" />
+                <br />
+                <label for="description" class="custom-description">
+                  Enter Description of your CBT
+                </label>
+                <input type="text" id="desc" name="desc" />
+                <br />
+                <button className="button" type="submit">
+                  Submit Data
+              </button>
+            </form>
+          </div>
+          <br />
               <div className="columns">
                 <div className="column is-four-fifths">
                   <input
