@@ -18,7 +18,7 @@ body {
 }
 
 .panel-heading {
-  xbackground-image: linear-gradient(to left,#38052F, #070709);
+  xbackground-image: linear-gradient(to left, #38052f, #070709);
   background-color: black;
   color: white;
 }
@@ -40,7 +40,7 @@ body {
 }
 
 .connect-wallet span {
-  color: #E10859;
+  color: #e10859;
 }
 
 .connect-wallet:hover {
@@ -61,4 +61,12 @@ body {
 
 .withdraw-success {
   color: green;
+}
+
+.containerform {
+  color: rgb(0, 0, 0);
+}
+
+.custom-name {
+  margin-bottom: 100px;
 }
